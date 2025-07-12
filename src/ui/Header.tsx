@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { Cart } from "@/components/Cart/ShoppingCart";
 import { WishList } from "@/components/wishList/ShoppingWishList";
 import { useState } from "react";
+import LoginButton from "@/components/Auth/LoginButton";
 
 const links = [
   { label: "Home", route: "/" },
   { label: "Clients", route: "/clients" },
   { label: "Profile", route: "/profile" },
+  { label: "Demo", route: "/demo" },
 ];
 
 export const Header = () => {
@@ -91,13 +93,12 @@ export const Header = () => {
                 </ul>
               )}
             </li>
-
-            <li>{/* <SignInButton /> */}</li>
           </div>
 
           <div className="flex items-center gap-4">
             <WishList />
             <Cart />
+            <LoginButton />
           </div>
         </ul>
       </nav>

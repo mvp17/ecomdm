@@ -21,20 +21,21 @@ const ClientsPage = () => {
     { key: "name", label: "Name", sortable: true },
     { key: "email", label: "Email", sortable: false },
     { key: "age", label: "Age", sortable: true },
-    {
-      key: "actions",
-      label: "Actions",
-      // @ts-expect-error ignore
-      render: (_, row: User) => (
-        <button
-          className="bg-blue-500 text-white px-3 py-1 rounded cursor-pointer"
-          onClick={() => alert(`Editing ${row.name}`)}
-        >
-          Edit
-        </button>
-      ),
-    },
   ];
+  columns.push({
+    key: "actions",
+    label: "Actions",
+    // @ts-expect-error ignore
+    render: (_, row: User) => (
+      <button
+        className="bg-blue-500 text-white px-3 py-1 rounded cursor-pointer"
+        onClick={() => alert(`Editing ${row.name}`)}
+      >
+        Edit
+      </button>
+    ),
+  });
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Clients</h1>

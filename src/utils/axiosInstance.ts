@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosRequestHeaders } from "axios";
 import { environment } from "@/config/environment";
 import { useToastStore } from "@/ui/toast/toastStore";
+import keycloak from "@/lib/keycloak";
 
 // Create an Axios instance with default settings
 export const apiClient = axios.create({
@@ -8,6 +9,16 @@ export const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+});
+
+apiClient.interceptors.request.use(async (config) => {
+  if (keycloak && keycloak.token) {
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${keycloak.token}`,
+    } as AxiosRequestHeaders;
+  }
+  return config;
 });
 
 // Add an interceptor to catch errors
