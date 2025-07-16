@@ -1,12 +1,12 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/ui/Card";
-import { Button } from "@/app/products/components/Button";
+import { Button } from "@/components/Button";
 import { Heart, ShoppingCart, Eye /*Share2, Scale*/ } from "lucide-react";
-import { Product } from "../Product";
 import { useCartStore } from "@/components/Cart/CartStore";
 import { useState } from "react";
 import { Modal } from "@/ui/Modal";
 import { useWishListStore } from "@/components/wishList/WishListStore";
-import { apiClient } from "@/utils/axiosInstance";
+import { apiClient } from "@/lib/axiosInstance";
+import { Product } from "@/types/Product";
 
 interface ProductCardProps {
   product: Product;
@@ -75,7 +75,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <Card className="p-4 rounded-2xl shadow-lg">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">{product.title}</CardTitle>
+        <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="text-gray-600 mb-4">{product.description}</p>
@@ -104,7 +104,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               title="Product Details"
             >
               <div className="p-4 pb-16 relative">
-                <h2 className="text-xl font-bold">{product.title}</h2>
+                <h2 className="text-xl font-bold">{product.name}</h2>
                 <p className="text-gray-600 mt-2">{product.description}</p>
                 <p className="text-blue-600 font-bold mt-2">
                   ${product.price.toFixed(2)}

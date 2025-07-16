@@ -5,7 +5,7 @@ import ProductItem from "@/components/demo/ProductItem";
 import OrderMessage from "@/components/demo/OrderMessage";
 import CreateProductModal from "@/components/demo/CreateProductModal";
 import { Product } from "@/components/demo/types/product";
-import { apiClient } from "@/utils/axiosInstance";
+import { apiClient } from "@/lib/axiosInstance";
 import keycloak from "@/lib/keycloak";
 
 export default function DemoPage() {

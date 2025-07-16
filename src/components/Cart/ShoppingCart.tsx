@@ -3,8 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useCartStore } from "./CartStore";
 import { loadStripe } from "@stripe/stripe-js";
-import { apiClient } from "@/utils/axiosInstance";
-
+import { apiClient } from "@/lib/axiosInstance";
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );

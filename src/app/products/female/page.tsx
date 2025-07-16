@@ -1,9 +1,8 @@
 "use client";
 
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard } from "@/components/ProductCard";
 import React, { useEffect } from "react";
-import { useProductsStore } from "../ProductStore";
-
+import { useProductsStore } from "@/stores/ProductStore";
 const ProductsPage = () => {
   const allProducts = useProductsStore((state) => state.femaleProducts);
   const getAllProducts = useProductsStore((state) => state.getAll);

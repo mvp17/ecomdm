@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 //import Image from 'next/image';
-import { apiClient } from "@/utils/axiosInstance";
+import { apiClient } from "@/lib/axiosInstance";
 
 const LOCAL_STORAGE_KEY = "profileImageId";
 

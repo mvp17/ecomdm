@@ -1,11 +1,5 @@
+import { Column } from "@/types/Column";
 import React, { useState } from "react";
-
-interface Column<T> {
-  key: keyof T;
-  label: string;
-  sortable?: boolean;
-  render?: (value: T[keyof T], row: T) => React.ReactNode;
-}
 
 interface TableProps<T> {
   columns: Column<T>[];
@@ -48,7 +42,7 @@ const Table = <T,>({ columns, data, onRowClick }: TableProps<T>) => {
           {columns.map((col) => (
             <th
               key={String(col.key)}
-              onClick={() => col.sortable && handleSort(col.key)}
+              onClick={() => col.sortable && handleSort(col.key as keyof T)}
               className={`p-2 border-b ${
                 col.sortable ? "hover:bg-gray-200 cursor-pointer" : ""
               }`}
@@ -74,8 +68,8 @@ const Table = <T,>({ columns, data, onRowClick }: TableProps<T>) => {
             {columns.map((col) => (
               <td key={String(col.key)} className="p-2 text-center">
                 {col.render
-                  ? col.render(row[col.key], row)
-                  : (row[col.key] as React.ReactNode)}
+                  ? col.render(row[col.key as keyof T], row)
+                  : (row[col.key as keyof T] as React.ReactNode)}
               </td>
             ))}
           </tr>
