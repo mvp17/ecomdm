@@ -3,6 +3,7 @@ import { Header } from "@/ui/Header";
 import "./globals.css";
 import { Footer } from "@/ui/Footer";
 import { ToastManager } from "@/ui/toast/ToastManager";
+import { KeycloakProvider } from "../context/KeycloakContext";
 
 export const metadata: Metadata = {
   title: "Ecom DM",
@@ -18,11 +19,11 @@ export default function RootLayout({
     <html lang="es">
       <body className={`antialiased min-h-screen flex flex-col`}>
         <ToastManager />
-        {/*<Provider>*/}
-        <Header />
-        <main className="grow">{children}</main>
-        <Footer />
-        {/*</Provider>*/}
+        <KeycloakProvider>
+          <Header />
+          <main className="grow">{children}</main>
+          <Footer />
+        </KeycloakProvider>
       </body>
     </html>
   );

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useCartStore } from "./CartStore";
 import { loadStripe } from "@stripe/stripe-js";
-import { apiClient } from "@/lib/axiosInstance";
+import { postCheckout } from "@/api/checkout-service";
+
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 );
@@ -27,7 +28,7 @@ export const Cart = () => {
     }
 
     try {
-      const response = await apiClient.post("/checkout", cartItems);
+      const response = await postCheckout(cartItems);
       const data = response.data;
 
       if (!response.data) {

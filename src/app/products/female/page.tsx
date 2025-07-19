@@ -3,6 +3,8 @@
 import { ProductCard } from "@/components/ProductCard";
 import React, { useEffect } from "react";
 import { useProductsStore } from "@/stores/ProductStore";
+import withAuthGuard from "@/utils/withAuthGuard";
+
 const ProductsPage = () => {
   const allProducts = useProductsStore((state) => state.femaleProducts);
   const getAllProducts = useProductsStore((state) => state.getAll);
@@ -23,4 +25,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default withAuthGuard(ProductsPage);

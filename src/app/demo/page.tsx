@@ -5,10 +5,12 @@ import ProductItem from "@/components/demo/ProductItem";
 import OrderMessage from "@/components/demo/OrderMessage";
 import CreateProductModal from "@/components/demo/CreateProductModal";
 import { Product } from "@/components/demo/types/product";
-import { apiClient } from "@/lib/axiosInstance";
 import keycloak from "@/lib/keycloak";
+import withAuthGuard from "@/utils/withAuthGuard";
+import { createOrder, createProduct, getProducts } from "@/api/demo-service";
+import { ProductRequest } from "@/types/Product";
 
-export default function DemoPage() {
+const DemoPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -16,7 +18,7 @@ export default function DemoPage() {
   }, []);
 
   const fetchProducts = async () => {
-    const res = await apiClient.get("/product");
+    const res = await getProducts();
     setProducts(res.data);
   };
 
@@ -45,7 +47,7 @@ export default function DemoPage() {
           lastName: keycloak.idTokenParsed?.family_name,
         };
 
-        const res = await apiClient.post(`/order`, {
+        const res = await createOrder({
           skuCode: sku,
           price: price,
           quantity: quantity,
@@ -67,20 +69,10 @@ export default function DemoPage() {
     }
   };
 
-  const handleCreateProduct = async (productData: {
-    skuCode: string;
-    name: string;
-    description: string;
-    price: number;
-  }) => {
+  const handleCreateProduct = async (productData: ProductRequest) => {
     try {
-      await apiClient.post(`/product`, {
-        skuCode: productData.skuCode,
-        name: productData.name,
-        description: productData.description,
-        price: productData.price,
-      });
-      const res = await apiClient.get("/product");
+      await createProduct(productData);
+      const res = await getProducts();
       setProducts(res.data);
     } catch (err) {
       console.error("Failed to create product:", err);
@@ -123,4 +115,6 @@ export default function DemoPage() {
       />
     </div>
   );
-}
+};
+
+export default withAuthGuard(DemoPage);

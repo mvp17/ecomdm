@@ -4,6 +4,7 @@ import React from "react";
 import Table from "@/ui/Table";
 import { Column } from "@/types/Column";
 import { User } from "@/types/User";
+import withAuthGuard from "@/utils/withAuthGuard";
 
 const ClientsPage = () => {
   const users: User[] = [
@@ -38,4 +39,4 @@ const ClientsPage = () => {
   );
 };
 
-export default ClientsPage;
+export default withAuthGuard(ClientsPage);

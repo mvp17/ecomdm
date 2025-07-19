@@ -3,11 +3,13 @@
 import { ProductCard } from "@/components/ProductCard";
 import React, { useEffect } from "react";
 import { useProductsStore } from "@/stores/ProductStore";
+import withAuthGuard from "@/utils/withAuthGuard";
 
 const ProductsPage = () => {
   const allProducts = useProductsStore((state) => state.maleProducts);
   const getAllProducts = useProductsStore((state) => state.getAll);
 
+  // TODO: Use React Query for data fetching
   useEffect(() => {
     if (allProducts.length === 0) getAllProducts();
   });
@@ -24,4 +26,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default withAuthGuard(ProductsPage);

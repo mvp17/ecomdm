@@ -2,17 +2,13 @@
 
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { Product } from "./types/product";
+import { Product } from "@/types/Product";
+import { ProductRequest } from "@/types/Product";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (product: {
-    skuCode: string;
-    name: string;
-    description: string;
-    price: number;
-  }) => void;
+  onCreate: (product: ProductRequest) => void;
 }
 
 export default function CreateProductModal({

@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 //import Image from 'next/image';
-import { apiClient } from "@/lib/axiosInstance";
+import withAuthGuard from "@/utils/withAuthGuard";
+import { getProfileImage, uploadProfileImage } from "@/api/user-management-service";
 
 const LOCAL_STORAGE_KEY = "profileImageId";
 
-export default function ProfilePage() {
+
+const ProfilePage = () => {
   const [, setImageId] = useState<string | null>(null);
   const [base64Url, setBase64Url] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -23,7 +25,7 @@ export default function ProfilePage() {
 
   const fetchBase64Image = async (id: string) => {
     try {
-      const res = await apiClient.get(`/download/${id}`);
+      const res = await getProfileImage(id);
       if (!res.data || !res.data.startsWith("data:image")) {
         throw new Error("Invalid base64 image data");
       }
@@ -46,13 +48,9 @@ export default function ProfilePage() {
     setIsLoading(true);
 
     try {
-      const res = await apiClient.post("/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
+      const res = await uploadProfileImage(formData);
       const newImageId = res.data;
+
       localStorage.setItem(LOCAL_STORAGE_KEY, newImageId);
       setImageId(newImageId);
       fetchBase64Image(newImageId);
@@ -97,4 +95,6 @@ export default function ProfilePage() {
       )}
     </div>
   );
-}
+};
+
+export default withAuthGuard(ProfilePage);

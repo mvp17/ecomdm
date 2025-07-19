@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { Cart } from "@/components/Cart/ShoppingCart";
 import { WishList } from "@/components/wishList/ShoppingWishList";
 import { useState } from "react";
-import LoginButton from "@/components/Auth/LoginButton";
+import { useKeycloakContext } from "../context/KeycloakContext";
 
 const links = [
   { label: "Home", route: "/" },
@@ -17,6 +17,7 @@ const links = [
 export const Header = () => {
   const pathname = usePathname();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const { authenticated, keycloak } = useKeycloakContext();
 
   return (
     <header className="bg-stone-100 shadow-md">
@@ -98,7 +99,21 @@ export const Header = () => {
           <div className="flex items-center gap-4">
             <WishList />
             <Cart />
-            <LoginButton />
+            {authenticated ? (
+              <button
+                className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                onClick={() => keycloak.logout()}
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                onClick={() => keycloak.login()}
+              >
+                Login
+              </button>
+            )}
           </div>
         </ul>
       </nav>

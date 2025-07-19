@@ -5,8 +5,8 @@ import { useCartStore } from "@/components/Cart/CartStore";
 import { useState } from "react";
 import { Modal } from "@/ui/Modal";
 import { useWishListStore } from "@/components/wishList/WishListStore";
-import { apiClient } from "@/lib/axiosInstance";
 import { Product } from "@/types/Product";
+import { getReport } from "@/api/report-service";
 
 interface ProductCardProps {
   product: Product;
@@ -51,7 +51,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   const handleReportClick = async (product: Product) => {
     try {
-      const response = await apiClient.post("/report", product);
+      const response = await getReport(product);
       const base64String = response.data.pdfBase64; // Extract Base64 string
 
       // Convert Base64 to a Blob
