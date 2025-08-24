@@ -6,13 +6,7 @@ import { Cart } from "@/components/Cart/ShoppingCart";
 import { WishList } from "@/components/wishList/ShoppingWishList";
 import { useState } from "react";
 import { useKeycloakContext } from "../context/KeycloakContext";
-
-const links = [
-  { label: "Home", route: "/" },
-  { label: "Clients", route: "/clients" },
-  { label: "Profile", route: "/profile" },
-  { label: "Demo", route: "/demo" },
-];
+import { links } from "@/lib/links";
 
 export const Header = () => {
   const pathname = usePathname();
@@ -102,7 +96,9 @@ export const Header = () => {
             {authenticated ? (
               <button
                 className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
-                onClick={() => keycloak.logout()}
+                onClick={() =>
+                  keycloak.logout({ redirectUri: window.location.origin })
+                }
               >
                 Logout
               </button>

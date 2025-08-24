@@ -1,15 +1,13 @@
-import { apiClient } from "@/lib/axiosInstance";
+import { apiGatewayClient } from "@/lib/axiosInstance";
 import { ProductRequest } from "@/types/Product";
 
 export const getProducts = () => {
-  return apiClient.get("/product");
+  return apiGatewayClient.get("/product");
 };
 
-
-
 export const createProduct = (productData: ProductRequest) => {
-  return apiClient.post("/product", productData);
-}
+  return apiGatewayClient.post("/product", productData);
+};
 
 type OrderRequest = {
   skuCode: string;
@@ -22,5 +20,5 @@ type OrderRequest = {
   };
 };
 export const createOrder = (orderData: OrderRequest) => {
-  return apiClient.post("/order", orderData);
+  return apiGatewayClient.post("/order", orderData);
 };

@@ -55,7 +55,7 @@ export const WishList = () => {
                   >
                     {/* Wishlist Item Details */}
                     <div>
-                      <p className="text-lg font-semibold">{item.title}</p>
+                      <p className="text-lg font-semibold">{item.name}</p>
                       <p className="text-sm text-gray-600">
                         ${item.price.toFixed(2)}
                       </p>

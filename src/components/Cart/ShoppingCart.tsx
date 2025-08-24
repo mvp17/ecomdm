@@ -94,7 +94,7 @@ export const Cart = () => {
                     className="flex justify-between items-center"
                   >
                     <div>
-                      <p className="font-medium">{item.title}</p>
+                      <p className="font-medium">{item.name}</p>
                       <p className="text-sm text-gray-500">
                         ${item.price.toFixed(2)}
                       </p>

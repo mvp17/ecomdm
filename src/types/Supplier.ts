@@ -1,6 +1,6 @@
-export type User = {
+export type Supplier = {
   id: number;
   name: string;
   email: string;
-  age: number;
+  reference: string;
 };

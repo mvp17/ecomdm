@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { Product } from "../../app/products/Product";
+import { Product } from "@/types/Product";
 import { Cart } from "./Cart";
 
 interface CartState {

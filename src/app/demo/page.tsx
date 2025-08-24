@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import ProductItem from "@/components/demo/ProductItem";
 import OrderMessage from "@/components/demo/OrderMessage";
 import CreateProductModal from "@/components/demo/CreateProductModal";
-import { Product } from "@/components/demo/types/product";
+import { Product } from "@/types/Product";
 import keycloak from "@/lib/keycloak";
 import withAuthGuard from "@/utils/withAuthGuard";
 import { createOrder, createProduct, getProducts } from "@/api/demo-service";

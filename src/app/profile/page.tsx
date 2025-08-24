@@ -3,37 +3,32 @@
 import { useState, useEffect } from "react";
 //import Image from 'next/image';
 import withAuthGuard from "@/utils/withAuthGuard";
-import { getProfileImage, uploadProfileImage } from "@/api/user-management-service";
-
-const LOCAL_STORAGE_KEY = "profileImageId";
-
+import {
+  getProfileImage,
+  uploadProfileImage,
+} from "@/api/user-management-service";
+import { useKeycloakContext } from "@/context/KeycloakContext";
 
 const ProfilePage = () => {
-  const [, setImageId] = useState<string | null>(null);
   const [base64Url, setBase64Url] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { keycloak } = useKeycloakContext();
 
   // Load image on mount if ID exists
   useEffect(() => {
-    const storedId = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (storedId) {
-      setImageId(storedId);
-      fetchBase64Image(storedId);
-    }
-  }, []);
+    fetchBase64Image(keycloak.subject!);
+  }, [keycloak.subject]);
 
-  const fetchBase64Image = async (id: string) => {
+  const fetchBase64Image = async (userId: string) => {
     try {
-      const res = await getProfileImage(id);
-      if (!res.data || !res.data.startsWith("data:image")) {
+      const res = await getProfileImage(userId);
+      /*if (!res.data || !res.data.startsWith("data:image")) {
         throw new Error("Invalid base64 image data");
-      }
+      }*/
       setBase64Url(res.data);
     } catch (err) {
       console.error("Failed to load image:", err);
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-      setImageId(null);
       setBase64Url(null);
     }
   };
@@ -42,23 +37,33 @@ const ProfilePage = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const MAX_SIZE_MB = 2;
+    const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+
+    if (file.size > MAX_SIZE_BYTES) {
+      alert(`Image is too large. Max size is ${MAX_SIZE_MB}MB.`);
+      e.target.value = ""; // Reset file input
+      return;
+    }
+
     setSelectedFile(file);
     const formData = new FormData();
     formData.append("file", file);
     setIsLoading(true);
 
     try {
-      const res = await uploadProfileImage(formData);
+      const res = await uploadProfileImage(formData, keycloak.subject!);
       const newImageId = res.data;
 
-      localStorage.setItem(LOCAL_STORAGE_KEY, newImageId);
-      setImageId(newImageId);
       fetchBase64Image(newImageId);
     } catch (err) {
       console.error("Error uploading file:", err);
-      alert("Image upload failed");
+      alert("Failed to upload image. Please try again.");
+      setBase64Url(null);
+      setSelectedFile(null);
     } finally {
       setIsLoading(false);
+      e.target.value = ""; // Reset file input
     }
   };
 
@@ -79,6 +84,8 @@ const ProfilePage = () => {
       ) : (
         <div className="mb-4 text-gray-500">No image uploaded</div>
       )}
+
+      <p className="text-sm text-gray-500 mb-2">Max file size: 2MB</p>
 
       <input
         type="file"

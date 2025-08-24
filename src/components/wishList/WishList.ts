@@ -1,4 +1,4 @@
-import { Product } from "@/app/products/Product";
+import { Product } from "@/types/Product";
 
 export type WishList = Product & {
   addedAt: string; // Timestamp when the product was added to the wishlist
