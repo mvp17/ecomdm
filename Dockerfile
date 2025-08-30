@@ -1,33 +1,26 @@
-# Step 1: Build the Next.js app
-FROM node:22 AS builder
-
+# ---- Build & Export (Next.js) ----
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Install dependencies
-COPY package*.json ./
-RUN npm install
+# Install deps
+COPY package.json package-lock.json* pnpm-lock.yaml* yarn.lock* ./
+RUN npm ci || npm i
 
-# Copy the rest of the app
+# Copy source
 COPY . .
 
-# Build the Next.js app
+# Build (Next.js with output: "export" will create /out automatically)
 RUN npm run build
 
-# Step 2: Run in a lighter container
-FROM node:22-slim AS runner
+# ---- Nginx to serve the static site ----
+FROM nginx:1.27-alpine AS runner
+WORKDIR /usr/share/nginx/html
 
-WORKDIR /app
-ENV NODE_ENV=production
+# Copy exported site
+COPY --from=builder /app/out/ ./
 
-# Copy only necessary files
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
-# optional
-COPY --from=builder /app/next.config.js* ./
+# Replace default Nginx site config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 3000
-
-CMD ["npm", "start"]
-
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
